@@ -1,0 +1,46 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: index.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1.heading
+    = "List of measurements"
+  - if @medical_device
+    .actions_top
+      = link_to 'Back to medical device', gateway_medical_device_path(@medical_device.gateway, @medical_device)
+.value-container
+  - if @measurements.empty?
+    %div.no_items
+      = "There are no measurements"
+  - else
+    %table
+      %thead.header
+        %tr
+          %th.gateway_serial_number= 'Gateway S/N'
+          %th.medical_device_serial_number= 'Medical Device S/N'
+          %th.medical_device_type= 'Medical Device Type'
+          %th.measurement_values= 'Values'
+          %th.measured_at= 'Measured at'
+      %tbody.items.gateways
+        - @measurements.each do |measurement|
+          %tr.measurement
+            %td.gateway_serial_number= link_to measurement.medical_device.gateway.serial_number, gateway_medical_device_measurement_path(measurement.medical_device.gateway, measurement.medical_device, measurement)
+            %td.medical_device_serial_number= link_to measurement.medical_device.serial_number, gateway_medical_device_measurement_path(measurement.medical_device.gateway, measurement.medical_device, measurement)
+            %td.medical_device_type= link_to measurement.type.underscore.humanize, gateway_medical_device_measurement_path(measurement.medical_device.gateway, measurement.medical_device, measurement)
+            %td.measurement_values= link_to measurement_values(measurement), gateway_medical_device_measurement_path(measurement.medical_device.gateway, measurement.medical_device, measurement)
+            %td.measured_at= link_to measurement.measured_at, gateway_medical_device_measurement_path(measurement.medical_device.gateway, measurement.medical_device, measurement)
+
+  = will_paginate(@measurements)

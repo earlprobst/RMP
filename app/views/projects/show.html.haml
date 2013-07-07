@@ -1,0 +1,41 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1= "Project"
+  .actions_top
+    - if can? :update, @project
+      = link_to 'Edit', edit_project_path
+    - if can? :delete, @project
+      = link_to 'Delete', @project, :confirm => "All the gateways, medical devices, measurements and users that only belongs to this project will be deleted. Are you sure?", :method => :delete
+
+.value-container
+  = content_tag_for(:dl, @project) do
+    %dt.label= 'Project name'
+    %dd.name= h @project.try(:name)
+    %dt.label= 'Contact person'
+    %dd.name= h @project.try(:contact_person)
+    %dt.label= 'Email'
+    %dd.name= h @project.try(:email)
+    %dt.label= 'Address'
+    %dd.name= h @project.try(:address)
+    %dt.label= 'Project RMP URL'
+    %dd.name= h @project.try(:rmp_url)
+    %dt.label= 'Project Medical Data URL'
+    %dd.name= h @project.try(:medical_data_url)
+    %dt.label= 'Project Package Repository URL'
+    %dd.name= h @project.try(:opkg_url)

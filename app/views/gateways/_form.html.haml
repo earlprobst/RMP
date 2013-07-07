@@ -1,0 +1,39 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- content_for :head do
+  = javascript_include_tag "dynamic_intervals"
+  = javascript_include_tag "pin_notification"
+
+= form.inputs do
+  = form.input :serial_number
+  = form.input :mac_address, :label => 'MAC address'
+  = form.input :location, :label => 'Location'
+  - if @current_user.is_superadmin?
+    = form.input :project_id, :collection => Project.all
+  - else
+    = form.input :project_id, :collection => Project.admin_user_is(@current_user)
+  = form.input :debug_mode, :hint => 'Reset the token every time is requested'
+
+:javascript
+  var selectboxes = ["#gateway_configuration_attributes_configuration_update_interval",
+                     "#gateway_configuration_attributes_status_interval",
+                     "#gateway_configuration_attributes_send_data_interval",
+                     "#gateway_configuration_attributes_software_update_interval"];
+
+  var debug_options = #{Configuration::DEBUG_INTERVALS.to_a};
+  var normal_options = #{Configuration::NOT_DEBUG_INTERVALS.to_a};

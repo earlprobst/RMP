@@ -1,0 +1,47 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: index.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1.heading
+    = "Projects"
+  .actions_top
+    - if can? :create, Project
+      = link_to 'Add a new project', new_project_path
+.value-container
+  - if @projects.empty?
+    %div.no_items
+      = "There are no projects"
+  - else
+    %table
+      %thead.header
+        %tr
+          %th.name= 'Name'
+          %th.number_of_gateways= 'Number of gateways'
+          %th.admins= 'Administrated by'
+      %tbody.items.projects
+        - @projects.each do |project|
+          %tr.project
+            %td.name= link_to project.name, project
+            %td.number_of_gateways= link_to project.gateways.count, gateways_path
+            %td.admins
+              - User.admin_of_project(project).each do |user|
+                - if current_user.is_admin_of_a_shared_project_with?(user)
+                  %lu= link_to user.name, user
+                - else
+                  %lu= user.name
+
+  = will_paginate(@projects)

@@ -1,0 +1,129 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h2.title Configuration
+  .actions_top
+    = link_to 'Gateway', @gateway
+
+.content_container
+
+  = content_tag_for(:dl, resource) do
+    .title-container
+      %h3.title Network priority
+    #network-priority.value-container
+      - (1..3).entries.each do |n|
+        %dt.label= "#{n}. Network"
+        %dd.name= h resource.try("network_#{n}".to_sym)
+
+    - if (resource.try(:network_1_id) == 1 || resource.try(:network_2_id) == 1 || resource.try(:network_3_id) == 1)
+      .title-container
+        %h3.title Ethernet configuration
+      #ethernet-configuration.value-container
+        %dt.label= 'DHCP / fixed IP'
+        %dd.name= h resource.try(:ethernet_ip_assignment_method)
+        - if resource.try(:ethernet_ip_assignment_method_id) == 2
+          %dt.label= 'IP'
+          %dd.name= h resource.try(:ethernet_ip)
+          %dt.label= 'Default gateway IP'
+          %dd.name= h resource.try(:ethernet_default_gateway_ip)
+          %dt.label= 'Primary DNS'
+          %dd.name= h resource.try(:ethernet_dns_1)
+          %dt.label= 'Secondary DNS'
+          %dd.name= h resource.try(:ethernet_dns_2)
+          %dt.label= 'MTU'
+          %dd.name= h resource.try(:ethernet_mtu)
+        = render 'configurations/proxy', :resource => resource, :interface => :ethernet
+
+    - if (resource.try(:network_1_id) == 2 || resource.try(:network_2_id) == 2 || resource.try(:network_3_id) == 2)
+      .title-container
+        %h3.title GPRS configuration
+      #gprs-configuration.value-container
+        %dt.label= 'Provider'
+        %dd.name= h resource.try(:gprs_provider)
+        %dt.label= 'APN'
+        %dd.name= h resource.try(:gprs_apn)
+        %dt.label= 'MTU'
+        %dd.name= h resource.try(:gprs_mtu)
+        %dt.label= 'Pin'
+        %dd.name= h resource.try(:gprs_pin)
+        - if resource.try(:gprs_phone_number).present?
+          %dt.label= 'Phone number'
+          %dd.name= h resource.try(:gprs_phone_number)
+        - if resource.try(:gprs_username).present?
+          %dt.label= 'Username'
+          %dd.name= h resource.try(:gprs_username)
+          %dt.label= 'Password'
+          %dd.name= h resource.try(:gprs_password).gsub(/./, '*')
+        = render 'configurations/proxy', :resource => resource, :interface => :gprs
+
+    - if (resource.try(:network_1_id) == 3 || resource.try(:network_2_id) == 3 || resource.try(:network_3_id) == 3)
+      .title-container
+        %h3.title PSTN configuration
+      #pstn-configuration.value-container
+        %dt.label= 'Username'
+        %dd.name= h resource.try(:pstn_username)
+        %dt.label= 'Password'
+        %dd.name= h resource.try(:pstn_password).gsub(/./, '*')
+        %dt.label= 'MTU'
+        %dd.name= h resource.try(:pstn_mtu)
+        %dt.label= 'Dialin'
+        %dd.name= h resource.try(:pstn_dialin)
+        = render 'configurations/proxy', :resource => resource, :interface => :pstn
+
+    .title-container
+      %h3.title Time configuration
+    #time-configuration.value-container
+      %dt.label= 'Time zone'
+      %dd.name= h resource.try(:time_zone)
+
+    .title-container
+      %h3.title Interval configuration
+    #interval-configuration.value-container
+      %dt.label= 'Actions request interval'
+      %dd.name= h resource.try(:configuration_update_interval_string)
+      - if resource.try(:temporal_configuration_update_interval_string)
+        ="(Now using #{resource.try(:temporal_configuration_update_interval_string)})"
+      %dt.label= 'Status interval'
+      %dd.name= h resource.try(:status_interval_string)
+      %dt.label= 'Send data interval'
+      %dd.name= h resource.try(:send_data_interval_string)
+
+    .title-container
+      %h3.title Log files configuration
+    #log-files-configuration.value-container
+      %dt.label= 'Send log files'
+      %dd.value= h resource.try(:send_log_files) ? "Yes" : "No"
+      %dt.label= 'Log level'
+      %dd.value= h Configuration::LOG_LEVELS[resource.try(:log_level)]
+      
+    .title-container
+      %h3.title Software update configuration
+    #software-update-configuration.value-container
+      %dt.label= 'Automatic updates'
+      %dd.value= h resource.try(:auto_update) ? "Yes" : "No"
+      %dt.label= 'Software update interval'
+      %dd.name= h resource.try(:software_update_interval_string)
+      %dt.label= 'Repo type'
+      %dd.name= h resource.try(:repo_type)
+
+    .title-container
+      %h3.title Connectors
+    #connectors.value-container
+      - Connector.all.each do |connector|
+        %dt.label= connector.name
+        %dd.value= resource.connectors.include?(connector) ? "Yes" : "No"

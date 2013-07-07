@@ -1,0 +1,346 @@
+#-----------------------------------------------------------------------------
+#
+# Biocomfort Diagnostics GmbH & Co. KG
+#            Copyright (c) 2008 - 2012. All Rights Reserved.
+# Reproduction or modification is strictly prohibited without express
+# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+#
+#-----------------------------------------------------------------------------
+#
+# Contact: vollmer@biocomfort.de
+#
+#-----------------------------------------------------------------------------
+#
+# Filename: master.scss
+#
+#-----------------------------------------------------------------------------
+
+@import "colors";
+@import "compass/utilities/general/clearfix";
+@import "960/grid";
+@import "fancy-buttons";
+@import "formtastic_base";
+@import "formtastic_changes";
+@import "compass/css3/border-radius";
+@import "menu";
+
+/*Mixins*/
+
+
+
+@mixin submit-button {
+.inputs input[type='submit'], .buttons input[type='submit'] {
+      @include fancy-button-matte($bc_gray);
+      @include fancy-button-size(14px, 0em, 1px);
+  }
+
+}
+
+@mixin horizontal-space{
+  margin-bottom:20px;
+}
+
+/*Variables*/
+
+$floated_total_width: 100%;
+// Total Width of form
+//
+$floated_input_width: 40%;
+// Width of inputs
+//
+$floated_label_width: 25%;
+// Width of Label
+//
+$floated_label_padding_x: 0;
+// How far labels are spaced from inputs
+//
+$floated_button_align:"buttons-left";
+// "buttons-left"   = float submit button left
+// "buttons-right"  = float submit button right
+// "buttons-center" = no float, auto width
+// "buttons-full"   = submit button matches input width
+//
+$floated_label_text_align:"left";
+// "left"
+// "right"
+// "center"
+//
+$floated_select_width: "select-full";
+// "select-auto"   = default width
+// "select-full"  = same as specified input width
+
+/* COLORS */
+
+body {
+  background: $bc-gray; }
+
+#container_content{
+  background: white;
+}
+
+#app_title{
+  color: white;
+  font-family:Optima, Verdana;
+  font-weight:normal;
+  margin:0;
+}
+
+
+
+/*Typography*/
+
+body{
+  font-family: Verdana;
+  font-size:12px;
+
+}
+
+#app_title{
+  font-size:24px;
+}
+h1{
+  font-size:18px;
+}
+h2
+{
+  font-size:16px;
+}
+p, label, li{
+  font-size: 13px;
+}
+
+#nav li{
+   font-size: 14px;
+}
+
+.actions a {
+   text-decoration: none;
+   font-weight: bold;
+   color: gray;
+   padding: 5px;
+   &:hover{
+     color: $bc_blue;
+     }
+  }
+
+
+/* Grid */
+#container {
+  @include grid-container;
+  @include clearfix;
+  #header {
+    @include grid(12);
+    @include alpha;
+    margin-top: 20px;
+    padding-bottom:30px;
+    #app_title{
+      @include grid(10);}
+    #logo{
+      @include grid(2);}
+    }
+  #nav {
+    @include clearfix;
+    @include grid-container;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    .main_nav
+    {
+      @include grid(10);}
+    .welcome
+    {
+      @include grid(2);}
+  }
+
+  #container_content{
+    @include grid(12);
+    @include alpha;}
+  #content{
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:20px;
+    }
+
+
+ #flash_container{
+   @include grid(8);
+   @include grid-prefix(2);
+   @include grid-suffix(2);
+   @include horizontal-space;
+ }
+
+  form.formtastic {
+    @include grid-prefix(1);
+    @include float-form($floated_total_width,$floated_label_width,$floated_input_width,$floated_label_padding_x, $floated_button_align, $floated_label_text_align, $floated_select_width );
+    @include submit_button;
+
+    .title {
+      @include grid(12);
+    }
+
+    #errorExplanation{
+      @include grid(6);
+      @include alpha;
+      @include horizontal-space;
+    }
+    @include horizontal-space;
+  }
+
+  #footer{
+    @include grid(12);
+    @include clearfix;
+    .copyright{
+      @include grid(10);
+      @include alpha;
+    }
+    .version{
+      @include grid(2);
+      @include alpha;
+      text-align:right;
+    }
+  }
+}
+
+.content_container
+{
+  @include grid-container;
+}
+
+
+.middle_actions{
+  margin:-53px 45px 0 0;
+display:inline;float:right;}
+
+.title-container
+{
+  @include grid(11,12);
+  @include clearfix;
+
+  margin-top: 10px;
+  h3,h2,h1{
+    @include grid(5,12);
+  }
+
+  .actions_top
+  {
+    @include grid(5,12);
+    @include alpha;
+    float:right;
+    margin-left:20px;
+    padding-top: 20px;
+    text-align: right;
+    a
+    {
+      text-decoration: none;
+      font-weight: bold;
+      color: gray;
+      padding: 5px;
+      &:hover{
+        color: $bc_blue;
+        }
+      }
+    }
+}
+
+.value-container
+{
+  @include clearfix;
+  @include grid(11,12);
+  padding: 10px;
+  background: $bc_light_gray;
+  border: 1px dashed gray;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.pagination
+{
+  @include clearfix;
+  @include grid(10,12);
+  padding: 10px;
+  margin-top:10px;
+  margin-bottom:10px;
+
+  a
+  {
+    text-decoration: none;
+    font-weight: bold;
+    color: gray;
+    padding: 5px;
+    &:hover{
+      color: $bc_blue;
+      }
+    }
+}
+
+
+
+#header a{
+  text-decoration:none;
+}
+
+#header img{
+  border: none;
+}
+
+#container form.formtastic input, #container form.formtastic textarea{
+background: #FAFAFA;
+border: 1px solid #CCC;
+color: #333;
+padding: 0.2em;
+}
+
+/*Flash*/
+
+#flash_container{
+  margin-top:5px;
+}
+
+.notice{
+  background-color:$notice_green;
+  padding:5px;
+}
+
+form.formtastic #errorExplanation ul li {
+  list-style: disc;
+    display:list-item;
+    padding:0px;
+  }
+
+  form.formtastic #errorExplanation {
+    border: 2px dashed red;
+     background-color:$warning_red;
+     padding: 20px;
+     display:list-item;
+
+    }
+
+
+/*Customization (TODO refactor)*/
+
+#container form.formtastic legend{
+  font-weight:bold;
+}
+
+#container form.formtastic ul, #container form.formtastic ol, #container form.formtastic legend{
+margin: 0px;
+padding: 20px;
+}
+
+#content td.measurement_values {
+  min-width: 164px;
+}
+
+#content td.measurement_values a {
+  display: block;
+}
+
+#content td.measurement_values ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+#content td.measured_at {
+  min-width: 190px;
+}
+

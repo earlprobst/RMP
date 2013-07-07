@@ -1,0 +1,36 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: index.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1= 'System states'
+  .actions_top
+    = link_to 'Gateway', @system_states.first.gateway
+
+.content_container
+
+  .title-container
+    = will_paginate(@system_states)
+
+  .title-container
+    %h2.title Gateway state
+  #gateway-state.value-container
+    = render 'system_states/show', :resource => @system_states.first, :all_info => true
+
+  .title-container
+    %h2.title Medical devices state
+  #medical-devices-state.value-container
+    = render 'medical_device_states/list', :resources => @system_states.first.medical_device_states

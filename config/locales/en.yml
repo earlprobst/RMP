@@ -1,0 +1,28 @@
+#-----------------------------------------------------------------------------
+#
+# Biocomfort Diagnostics GmbH & Co. KG
+#            Copyright (c) 2008 - 2012. All Rights Reserved.
+# Reproduction or modification is strictly prohibited without express
+# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+#
+#-----------------------------------------------------------------------------
+#
+# Contact: vollmer@biocomfort.de
+#
+#-----------------------------------------------------------------------------
+#
+# Filename: en.yml
+#
+#-----------------------------------------------------------------------------
+
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  activerecord:
+    errors:
+      messages:
+        medical_device:
+          no_user_selected: "At least one user must be selected"
+          invalid_default_user: "can't be a not selected user"
+          blank_default_user: "can't be blank"

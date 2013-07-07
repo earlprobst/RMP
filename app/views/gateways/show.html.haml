@@ -1,0 +1,118 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- content_for :head do
+  = javascript_include_tag "medical_devices_synchronization"
+  = javascript_include_tag "gateway_shutdown_actions"
+  = javascript_include_tag "gateway_vpn_actions"
+  = javascript_include_tag "gateway_removemeasurements_action"
+
+.title-container
+  %h1= 'Gateway'
+  .actions_top
+    - if can? :destroy, @gateway
+      = link_to 'Delete gateway', @gateway, :confirm => "Are you sure?", :method => :delete
+
+      = semantic_form_for @gateway, :html => {:class => 'gateway_removemeasurements_form', :style => 'display:none'} do |form|
+        = form.inputs do
+          = form.input :removemeasurements_action, :value => true, :as => :hidden
+          = form.buttons do
+            = form.commit_button 'Remove measurements'
+      = link_to 'Remove measurements', nil, :class => 'gateway_removemeasurements_link', :style => removemeasurements_link_style(@gateway.removemeasurements_action)
+      .removemeasurements_msg{:style => removemeasurements_msg_style(@gateway.removemeasurements_action)}= "Removing measurements..."
+
+      = semantic_form_for @gateway, :html => {:class => 'gateway_shutdown_form', :style => 'display:none'} do |form|
+        = form.inputs do
+          = form.input :shutdown_action_id, :value => 2, :as => :hidden
+          = form.buttons do
+            = form.commit_button 'Shutdown gateway'
+      = link_to 'Shutdown gateway', nil, :class => 'gateway_shutdown_link', :style => shutdown_link_style(@gateway.shutdown_action_id)
+      .shutdown_msg{:style => shutdown_msg_style(@gateway.shutdown_action_id)}= "Shutdowning gateway..."
+      
+      = semantic_form_for @gateway, :html => {:class => 'gateway_reboot_form', :style => 'display:none'} do |form|
+        = form.inputs do
+          = form.input :shutdown_action_id, :value => 1, :as => :hidden
+          = form.buttons do
+            = form.commit_button 'Reboot gateway'
+      = link_to 'Reboot gateway', nil, :class => 'gateway_reboot_link', :style => shutdown_link_style(@gateway.shutdown_action_id)
+      .reboot_msg{:style => reboot_msg_style(@gateway.shutdown_action_id)}= "Rebooting gateway..."
+
+      = semantic_form_for @gateway, :html => {:class => 'gateway_vpn_form', :style => 'display:none'} do |form|
+        = form.inputs do
+          = form.input :vpn_action_id, :value => 1, :as => :hidden
+          = form.buttons do
+            = form.commit_button 'Open VPN'
+      = link_to 'Open VPN', nil, :class => 'gateway_vpn_link', :style => vpn_link_style(@gateway.vpn_action_id)
+      .open_vpn_msg{:style => vpn_msg_style(@gateway.vpn_action_id)}= "Opening VPN..."
+
+.content_container
+
+  .title-container
+    %h2.title State: #{@gateway.state.camelize} #{gateway_state(@gateway.state)}
+    .actions_top
+      = link_to 'See all state info', gateway_system_states_path(@gateway) unless @gateway.current_system_state.nil?
+  #system-state.value-container
+    = render 'system_states/show', :resource => @gateway.current_system_state, :all_info => false
+
+  .title-container
+    %h2.title General Information
+    .actions_top
+      = link_to 'See configuration', gateway_configuration_path(@gateway)
+      = link_to 'Download configuration', gateway_path(@gateway, :format => :xml)
+      - if can? :update, @gateway
+        = link_to 'Edit', edit_gateway_path(@gateway)
+  #general-information.value-container
+    = content_tag_for(:dl, @gateway) do
+      %dt.label= 'Serial number'
+      %dd.name= h @gateway.try(:serial_number)
+      %dt.label= 'MAC address'
+      %dd.name= h @gateway.try(:mac_address)
+      %dt.label= 'Location'
+      %dd.name= h @gateway.try(:location)
+      - if @gateway.try(:token).present?
+        %dt.label= 'Token'
+        %dd.name= h @gateway.try(:token)
+      %dt.label= 'Debug mode'
+      %dd.value= @gateway.try(:debug_mode) ? "Yes" : "No"
+
+  .title-container
+    %h2.title Medical devices
+    .actions_top
+      - if can? :create, MedicalDevice, @gateway
+        = semantic_form_for @gateway, :html => {:class => 'gateway_synchronize_form', :style => 'display:none'} do |form|
+          = form.inputs do
+            = form.input :synchronize_md, :value => true, :as => :hidden
+            = form.buttons do
+              = form.commit_button 'Synchronize medical devices'
+        = link_to 'Synchronize medical devices', nil, :class => 'gateway_synchronize_link', :style => synchronize_link_style(@gateway.synchronize_md)
+        .synchronize_msg{:style => synchronize_msg_style(@gateway.synchronize_md)}= "Synchronizing medical devices..."
+        = link_to '+ Add a new medical device', new_gateway_medical_device_path(@gateway)
+  .value-container
+    = render 'medical_devices/list', :resources => @gateway.medical_devices, :gateway => @gateway
+
+  .title-container
+    %h2.title Activities
+  #activities.value-container
+    = render 'activities_dates/show', :resource => @gateway.activities_date
+
+  .title-container
+    %h2.title Log files
+    .actions_top
+      - if (can? :clear_log_files, @gateway) && @gateway.debug_mode && @gateway.log_files.present?
+        = link_to "- Delete last #{LogFile::LOG_DELETE_LIMIT} log files", gateway_clear_log_files_path(@gateway), :confirm => "This action will delete last #{LogFile::LOG_DELETE_LIMIT} log files of this gateway. Are you sure?"
+  #log-files.value-container
+    = render 'log_files/list', :resources => @log_files

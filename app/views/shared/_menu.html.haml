@@ -1,0 +1,30 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _menu.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+%ul.main_nav
+  %li{menu_tab("home", current)}= link_to 'Home', root_path
+  %li{menu_tab("gateways", current)}= link_to 'Gateways', gateways_path
+  - if can? :read, Measurement
+    %li{menu_tab("measurements", current)}= link_to 'Measurements', measurements_path
+  - if (@current_user.projects.count > 1 || @current_user.is_superadmin?)
+    %li{menu_tab("projects", current)}= link_to 'Projects', projects_path
+  - else
+    %li{menu_tab("projects", current)}= link_to 'Project', projects_path
+  - if @current_user.is_admin_of_any_project? || @current_user.is_superadmin?
+    %li{menu_tab("users", current)}= link_to 'Users', users_path
+  - else
+    %li{menu_tab("users", current)}= link_to 'User', account_path

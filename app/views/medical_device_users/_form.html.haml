@@ -1,0 +1,33 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.fields
+  .user
+    %h3= ""
+    = f.input :md_user, :as => :hidden
+  = f.input :default, :class => "default_field"
+  .optional_fields
+    = f.input :gender, :as => :select, :collection => {"Male" => "male", "Female" => "female"}
+    = f.input :physical_activity, :as => :select, :collection => {"Low" => "low", "Average" => "average", "Intensive" => "intensive"}
+    = f.input :age
+    = f.input :height
+    = f.input :units, :as => :select, :collection => {"kg-cm" => "kg-cm", "lb-inch" => "lb-inch", "st-inch" => "st-inch"}
+    = f.input :display_body_fat
+    = f.input :display_body_water
+    = f.input :display_muscle_mass
+  = f.hidden_field :_destroy, :class => 'user_destroy_field'
+  = link_to_function "Remove", "remove_fields(this)"

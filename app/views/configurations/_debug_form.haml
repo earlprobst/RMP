@@ -1,0 +1,20 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _debug_form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+= form.inputs :name => 'Log files configuration', :id => 'log_configurations' do
+  = form.input :send_log_files, :label => 'Send log files', :hint => 'Enable send log files (only in debug mode)'
+  = form.input :log_level, :as => :select, :collection => Configuration.log_level_collection, :prompt=>false

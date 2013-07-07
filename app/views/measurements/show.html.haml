@@ -1,0 +1,34 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1= "#{@measurement.type.underscore.humanize} measurement"
+
+.value-container
+  = content_tag_for(:dl, @measurement) do
+    %dt.label= 'Session id'
+    %dd.name= h @measurement.try(:session_id)
+    %dt.label= 'Measured at'
+    %dd.name= h @measurement.try(:measured_at)
+    %dt.label= 'Transmitted data set'
+    %dd.name= h @measurement.try(:transmitted_data_set)
+    %dt.label= 'User'
+    %dd.name= h @measurement.try(:user)
+    %dt.label= 'Registered at'
+    %dd.name= h @measurement.try(:registered_at)
+
+    = render "#{@measurement.try(:type).underscore}/show", :resource => @measurement

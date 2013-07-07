@@ -1,0 +1,29 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: edit.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+%h1.heading
+  = 'Edit project'
+
+= semantic_form_for(@project) do |form|
+  = form.error_messages
+
+  = render 'form', :form => form
+  = form.buttons do
+    = form.commit_button 'Update project'
+
+%p.actions
+  = link_to 'Cancel', projects_path

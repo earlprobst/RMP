@@ -1,0 +1,148 @@
+#-----------------------------------------------------------------------------
+#
+# Biocomfort Diagnostics GmbH & Co. KG
+#            Copyright (c) 2008 - 2012. All Rights Reserved.
+# Reproduction or modification is strictly prohibited without express
+# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+#
+#-----------------------------------------------------------------------------
+#
+# Contact: vollmer@biocomfort.de
+#
+#-----------------------------------------------------------------------------
+#
+# Filename: _formtastic_changes.scss
+#
+#-----------------------------------------------------------------------------
+
+s@import "compass/utilities";
+@import "colors";
+@import "compass/css3";
+
+
+form.formtastic fieldset > ol > li.password input { max-width: 74%; }
+form.formtastic fieldset > ol > li fieldset ol { width: 20%;}
+
+/*
+body {
+  background: $bc_gray;
+  font-family: Verdana;
+  margin: 0;
+  h1 {
+    font-size: 1.5em; }
+  h2 {
+    font-size: 1em; }
+  h3 {
+    font-size: 0.9em; }
+  p, td, th, #content {
+    font-size: 0.9em; }
+  .inline-hints {
+    font-size: 0.7em; } }
+
+form.formtastic fieldset ol li p.inline-hints {
+  margin: 0; }
+
+form.formtastic fieldset ol li p.inline-errors {
+  margin: 0.5em 0 0 38%; }
+
+}
+*/
+/* line 356, ../../../app/stylesheets/_formtastic_base.sass */
+#container form.formtastic input, #container form.formtastic textarea {
+  width: auto;
+}
+
+#content {
+  abbr {
+    color: red;
+    padding: 2px; }
+  form {
+    padding: 40px;
+    .buttons {
+      padding-left: 0px;
+      margin-top: 20px;
+      float: right; }
+    fieldset {
+      label {
+        width: 300px; }
+      .file.optional {
+        display: inline;
+        padding: 5px;
+        label {
+          width: 200px; } }
+      ol {
+        li {
+          label {
+            padding: 0; }
+          textarea {
+            padding: 1em;
+            display: block;
+            width: 50%;
+            height: 100px;
+            max-width: 350px; }
+          select,input {
+            &[type=text] {
+              width: 300px;
+              padding: 5px; }
+            &[type=password] {
+              width: 300px;
+              padding: 5px; } } }
+        .error {
+          label {
+            color: red; }
+          input {
+            height: 110%;
+            width: 100%;
+            border: {
+              style: solid;
+              color: $warning_red;
+              width: 3px; }; } }
+        fieldset {
+          ol {
+            padding: 0 0 0 300px; } } } } }
+  td, th {
+    min-width: 100px; }
+  dl {
+    @include border-radius(0.667em);
+    dt {
+      padding: 6px;
+      margin-left: 15px;
+      font-weight: bold;
+      text-align: right;
+      width: 300px;
+      display: inline-block; }
+    dd {
+      margin: 0;
+      margin-left: 20px;
+      text-align: left;
+      margin-bottom: 10px;
+      width: 300px;
+      display: inline-block; } } }
+
+.buttons {
+  padding: 5px; }
+
+table {
+  margin-left: 20px;
+  border-collapse:collapse;
+  border: solid 2px gray;
+  tr {
+  }
+  thead {
+    background: $bc_gray; }
+  td, th {
+    padding: 10px;
+    text-align: left;
+     border: solid 1px gray;
+    a {
+      padding: 5px;
+      color: black;
+      text-decoration: none;
+      &.hover, &:hover {
+        color: white;
+        background-color: $bc_blue; } } } }
+
+.odd {
+  background: $bc_blue; }
+
+

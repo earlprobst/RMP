@@ -1,0 +1,40 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _list.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- if resources.empty?
+  %div.no_items
+    = "There are no medical devices"
+- else
+  %table
+    %thead.header
+      %tr
+        %th.serial_number= 'Serial number'
+        %th.type= 'Type'
+        %th.state= 'State'
+        %th.bound= 'Bound'
+        %th.last_contact= 'Last contact'
+    %tbody.items.medical_devices
+      - resources.each do |medical_device|
+        %tr.medical_device
+          %td.serial_number= link_to medical_device.serial_number, gateway_medical_device_path(gateway, medical_device)
+          %td.type= medical_device.type
+          %td.state
+            = medical_device.current_medical_device_state.try(:state_str) || '-'
+          %td.bound
+            = medical_device.current_medical_device_state.try(:bound_str) || '-'
+          %td.last_contact
+            = medical_device.current_medical_device_state.try(:created_at) || '-'

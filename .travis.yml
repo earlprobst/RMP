@@ -1,0 +1,10 @@
+before_install:
+  - curl -d repository=aentos/biocomfort_rmp -d commit=`git rev-parse HEAD` http://aentos-talker-from-travis.herokuapp.com/start
+  - cp config/database.yml.travis config/database.yml
+  - mkdir log
+rvm:
+  - 1.9.2
+notifications:
+  webhooks:
+    urls:
+      - http://aentos-talker-from-travis.herokuapp.com/travis

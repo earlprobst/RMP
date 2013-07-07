@@ -1,0 +1,66 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: application.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+!!! 1.1
+
+%html{html_attrs(I18n.locale)}
+  %head
+    %title= "#{controller.controller_name.humanize}: #{controller.action_name}"
+    /[if lt IE 7]
+    = stylesheet_link_tag 'compiled/ie6.css', :media => 'screen, projection'
+    = stylesheet_link_tag "formtastic", :cache => "formtastic_styles"
+    = stylesheet_link_tag "compiled/master"
+    = javascript_include_tag "jquery", "rails"
+    = csrf_meta_tag
+    = yield(:head)
+
+    %body{:id => "#{controller.controller_name}_#{controller.action_name}", :class => "#{controller.controller_name}_controller #{controller.action_name}_action"}
+      #container
+
+        #header
+          %h1#app_title Remote Management Platform
+          %a{:href=>"http://www.biocomfort.de"}
+            %logo=image_tag "pic_logo.gif"
+
+
+        #nav
+          - if logged_in?
+            = render 'shared/menu', :current => controller.controller_name
+            %ul.welcome
+              %li.logout= link_to "Logout", logout_path
+
+
+        #nav_second
+
+
+
+        #container_content
+
+          #flash_container
+
+            - if flash.has_key?(:success)
+              .notice= flash[:success]
+            - if flash.has_key?(:notice)
+              .notice= flash[:notice]
+            - if flash.has_key?(:error)
+              .error= flash[:error]
+
+          #content
+            = yield
+        #footer
+          %p.copyright © 2010 Biocomfort Diagnostics GmbH & Co. KG.
+          %p.version Version 1.0 <a href="/APIs" style="actions">APIs</a>

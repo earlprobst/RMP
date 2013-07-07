@@ -1,0 +1,25 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _proxy_form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+= link_to "+ Use proxy", nil, :class => "show-#{interface}-proxy"
+= link_to "- Don't use proxy", nil, :class => "hide-#{interface}-proxy"
+= form.inputs :name => 'Proxy', :id => "#{interface}-proxy-configuration" do
+  = form.input "#{interface}_proxy_server", :label => 'Server'
+  = form.input "#{interface}_proxy_port", :label => 'Port'
+  = form.input "#{interface}_proxy_username", :label => 'Username'
+  = form.input "#{interface}_proxy_password", :label => 'Password', :as => :password
+  = form.input "#{interface}_proxy_ssl", :label => 'SSL'

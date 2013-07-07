@@ -1,0 +1,29 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: new.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+%h1.heading
+  = 'Add new medical device to gateway'
+
+= semantic_form_for([resource.gateway, resource]) do |form|
+  = form.error_messages
+
+  = render 'form', :form => form
+  = form.buttons do
+    = form.commit_button 'Add medical device'
+
+%p.actions
+  = link_to 'Cancel', gateway_path(resource.gateway)

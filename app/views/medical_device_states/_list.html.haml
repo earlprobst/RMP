@@ -1,0 +1,39 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _list.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- if resources.empty?
+  %div.no_items
+    = "There are no medical devices states"
+- else
+  %table
+    %thead.header
+      %tr
+        %th.serial_number= 'Serial number'
+        %th.bound= 'Bound'
+        %th.state= 'State'
+        %th.battery= 'Battery'
+        %th.date= 'Date'
+        %th.error= 'Error'
+    %tbody.items.medical_device_states
+      - resources.each do |medical_device_state|
+        %tr.medical_device_state
+          %td.serial_number= medical_device_state.medical_device_serial_number
+          %td.bound= medical_device_state.bound_str
+          %td.state= medical_device_state.state_str
+          %td.battery= medical_device_state.battery_str
+          %td.date= medical_device_state.date_str
+          %td.error= medical_device_state.error_str

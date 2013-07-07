@@ -1,0 +1,48 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: index.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1.heading
+    = "List of gateways"
+  .actions_top
+    - if can? :create, Gateway
+      = link_to 'Add a new gateway', new_gateway_path
+.value-container
+  - if @gateways.empty?
+    %div.no_items
+      = "There are no gateways"
+  - else
+    %table
+      %thead.header
+        %tr
+          %th.serial_number= 'Serial number'
+          %th.number_of_medical_device= 'Nr of MD'
+          %th.state= 'State'
+          %th.last_contact= 'Last activity'
+          %th.project= 'Project'
+      %tbody.items.gateways
+        - @gateways.each do |gateway|
+          %tr.gateway{:class => "#{gateway.state}"}
+            %td.serial_number= link_to gateway.serial_number, gateway
+            %td.number_of_medical_device= gateway.medical_devices.count
+            %td.state
+              = gateway_state(gateway.state)
+              = gateway.state.camelize
+            %td.last_contact= gateway.last_contact if gateway.last_contact.present?
+            %td.project= link_to gateway.project.name, gateway.project
+
+  = will_paginate(@gateways)

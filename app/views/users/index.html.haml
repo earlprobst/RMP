@@ -1,0 +1,54 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: index.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1.heading
+    = "Users"
+  .actions_top
+    - if can? :create, User
+      = link_to 'Add a new user', new_user_path
+.value-container
+  - if @users.empty?
+    %div.no_items
+      = "There are no users"
+  - else
+    %table
+      %thead.header
+        %tr
+          %th.name= 'Name'
+          %th.email= 'Email'
+          %th.projects= 'Projects'
+      %tbody.items.users
+        - @users.each do |user|
+          %tr.user
+            - if user == current_user
+              %td.name= link_to user.name, account_url
+              %td.email= link_to user.email, account_url
+            - else
+              %td.name= link_to user.name, user
+              %td.email= link_to user.email, user
+
+            %td.projects
+              - if user.is_superadmin?
+                - Project.all.each do |project|
+                  %lu= link_to project.name, project
+              - else
+                - user.projects.each do |project|
+                  - if current_user.is_superadmin? || current_user.is_project_admin?(project)
+                    %lu= link_to project.name, project
+
+  = will_paginate(@users)

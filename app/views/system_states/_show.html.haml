@@ -1,0 +1,57 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- if resource.nil?
+  %div.no_items
+    = "There are no system state informations"
+- else
+  = content_tag_for(:dl, resource) do
+    %dt.label= 'Updated at'
+    %dd.name= resource.created_at
+    %dt.label= 'Network'
+    %dd.name
+      - if resource.network.nil?
+        = '-'
+      - else
+        = resource.network
+    %dt.label= 'IP'
+    %dd.name
+      - if resource.ip.nil?
+        = '-'
+      - else
+        = resource.ip
+    - if all_info
+      %dt.label= 'GPRS signal'
+      %dd.name
+        - if resource.gprs_signal.nil?
+          = '-'
+        - else
+          = resource.gprs_signal
+      %dt.label= 'Firmware version'
+      %dd.name
+        - if resource.firmware_version.nil?
+          = '-'
+        - else
+          = resource.firmware_version
+      %dt.label= 'Packages installed'
+      - if resource.packages.nil?
+        %dd.name= "There are no packages information"
+      - else
+        %dd.name= ""
+        - resource.packages.each do |pkg|
+          %dt.label= pkg["name"]
+          %dd.name= pkg["version"]

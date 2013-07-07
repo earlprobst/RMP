@@ -1,0 +1,82 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: show.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+.title-container
+  %h1= "Medical device"
+  .actions_top
+    - if can? :edit, @medical_device
+      = link_to 'Edit', edit_gateway_medical_device_path(@gateway, @medical_device)
+    - if can? :destroy, @medical_device
+      = link_to 'Delete', gateway_medical_device_path(@gateway, @medical_device), :confirm => "Are you sure?", :method => :delete
+    - if (can? :read, Measurement) && (@medical_device.measurements.count > 0)
+      = link_to 'View measurements', gateway_medical_device_measurements_path(@gateway, @medical_device)
+    = link_to 'Back to gateway', gateway_path(@gateway)
+
+.value-container
+  = content_tag_for(:dl, @medical_device) do
+    %dt.label= 'Serial number'
+    %dd.name= h @medical_device.try(:serial_number)
+    %dt.label= 'Type'
+    %dd.name= h @medical_device.try(:type)
+    %dt.label= 'Default user'
+    %dd.name= h @medical_device.try(:default_user)
+    %h2= "Medical device users"
+    - for user in @medical_device.users
+      %dt.label= 'User'
+      %dd.name= h user.try(:md_user)
+      %dt.label= 'Default'
+      %dd.name= h user.try(:default)
+      - if @medical_device.type == "scaleo-comfort (BSC105)"
+        %dt.label= 'Gender'
+        %dd.name= h user.try(:gender)
+        %dt.label= 'Physical activity'
+        %dd.name= h user.try(:physical_activity)
+        %dt.label= 'Age'
+        %dd.name= h user.try(:age)
+        %dt.label= 'Height'
+        %dd.name= h user.try(:height)
+        %dt.label= 'Units'
+        %dd.name= h user.try(:units)
+        %dt.label= 'Display body fat'
+        %dd.name= h user.try(:display_body_fat_to_s)
+        %dt.label= 'Display body water'
+        %dd.name= h user.try(:display_body_water_to_s)
+        %dt.label= 'Display muscle mass'
+        %dd.name= h user.try(:display_muscle_mass_to_s)
+
+.title-container
+  %h1= "Medical device current state"
+.value-container
+  - if @medical_device.current_medical_device_state.nil?
+    %div.no_items
+    = "There are no medical device current state information"
+  - else
+    %table
+      %thead.header
+        %tr
+          %th.bound= 'Bound'
+          %th.state= 'State'
+          %th.battery= 'Battery'
+          %th.date= 'Date'
+          %th.error= 'Error'
+      %tbody.current_state
+        %tr
+          %td.bound= h @medical_device.current_medical_device_state.bound_str
+          %td.state= h @medical_device.current_medical_device_state.state_str
+          %td.battery= h @medical_device.current_medical_device_state.battery_str
+          %td.date= h @medical_device.current_medical_device_state.date_str
+          %td.error= h @medical_device.current_medical_device_state.error_str

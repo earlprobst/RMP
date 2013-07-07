@@ -1,0 +1,35 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _list.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- if resources.empty?
+  %div.no_items
+    = "There are no log files"
+- else
+  %table
+    %thead.header
+      %tr
+        %th.date= 'Date'
+        - if (can? :destroy, @gateway) && @gateway.debug_mode
+          %th.action
+    %tbody.items.log_files
+      - resources.each do |log_file|
+        %tr.log_file
+          %td.date= link_to log_file.created_at.to_s, log_file.file.url
+          - if (can? :destroy, @gateway) && @gateway.debug_mode
+            %td.action= link_to 'Delete', gateway_log_file_path(log_file.gateway, log_file), :confirm => "Are you sure?", :method => :delete
+
+= will_paginate(resources, :param_name => "log_files_page")

@@ -1,0 +1,14 @@
+nbproject/*
+config/database.yml
+db/*.sqlite3
+bin/*
+tmp/**/*
+log/*.log*
+vendor/gems/*
+!vendor/gems/cache/
+public/stylesheets/compiled/*
+public/dummy_uploads/*
+public/uploads/*
+.rvmrc
+tmp/*
+*.swp

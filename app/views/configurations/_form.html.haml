@@ -1,0 +1,68 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- content_for :head do
+  = javascript_include_tag "configuration_form"
+
+= form.inputs :name => 'Network priority' do
+  - (1..3).entries.each do |n|
+    = form.input "network_#{n}_id".to_sym, :label => "#{n}. Network", :as => :select, :collection => Network.to_collection
+
+= form.inputs :name => 'Ethernet configuration', :id => 'ethernet-configuration' do
+  = form.input :ethernet_ip_assignment_method_id, :label => 'DHCP / fixed IP', :as => :select, :collection => EthernetIPAssignmentMethod.to_collection
+  = form.input :ethernet_ip, :label => 'IP'
+  = form.input :ethernet_default_gateway_ip, :label => 'Default gateway IP'
+  = form.input :ethernet_dns_1, :label => 'Primary DNS'
+  = form.input :ethernet_dns_2, :label => 'Secondary DNS'
+  = form.input :ethernet_mtu, :label => 'MTU'
+  = render 'configurations/proxy_form', :form => form, :interface => :ethernet
+
+= form.inputs :name => 'GPRS configuration', :id => 'gprs-configuration' do
+  = form.input :gprs_provider, :label => 'Provider', :required => false
+  = form.input :gprs_apn, :label => 'APN', :required => false
+  = form.input :gprs_mtu, :label => 'MTU', :required => false
+  = form.input :gprs_pin, :label => 'Pin', :required => false
+  = form.input :gprs_phone_number, :label => 'Phone number'
+  = form.input :gprs_authentication, :as => :boolean, :label => 'GPRS authentication'
+  = form.input :gprs_username, :label => 'Username', :required => false
+  = form.input :gprs_password, :label => 'Password', :as => :password, :required => false
+  = render 'configurations/proxy_form', :form => form, :interface => :gprs
+
+
+= form.inputs :name => 'PSTN configuration', :id => 'pstn-configuration' do
+  = form.input :pstn_username, :label => 'Username', :required => false
+  = form.input :pstn_password, :label => 'Password', :as => :password, :required => false
+  = form.input :pstn_mtu, :label => 'MTU', :required => false
+  = form.input :pstn_dialin, :label => 'Dialin', :required => false
+  = render 'configurations/proxy_form', :form => form, :interface => :pstn
+
+= form.inputs :name => 'Time configuration' do
+  = form.input :time_zone
+
+= form.inputs :name => 'Interval configuration' do
+  = form.input :configuration_update_interval, :label => 'Actions request interval', :as => :select, :collection => Configuration.interval_collection
+  = form.input :status_interval, :as => :select, :collection => Configuration.interval_collection
+  = form.input :send_data_interval, :as => :select, :collection => Configuration.interval_collection
+
+= form.inputs :name => 'Software update configuration' do
+  = form.input :auto_update, :label => 'Automatic updates', :hint => 'Enable the automatic software updates'
+  = form.input :software_update_interval, :as => :select, :collection => Configuration.interval_collection
+  = form.input :repo_type, :as => :select, :collection => {'Stable' => 'stable', 'Testing' => 'testing'}
+
+= form.inputs :name => 'Connectors', :id => 'connectors' do
+  =form.input :connectors, :as => 'check_boxes', :collection => Connector.all.collect { |c| [c.name, c.id] }, :label => false
+

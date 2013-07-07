@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+RETVAL=0
+
+case "$1" in
+  start)
+    RAILS_ENV=staging /usr/local/rvm/bin/bootup_god -c /var/rails/biocomfort_rmp_staging/current/config/delayed_job.god --log /var/log/god.log --no-syslog --log-level warn
+    RETVAL=$?
+    ;;
+  stop)
+    # stops god, leaves monitored processes running
+    RAILS_ENV=staging /usr/local/rvm/bin/bootup_god quit
+    RETVAL=$?
+    ;;
+  terminate)
+    # stops god, killing monitored processes
+    RAILS_ENV=staging /usr/local/rvm/bin/bootup_god terminate
+    RETVAL=$?
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    RETVAL=$?
+    ;;
+  status)
+    RAILS_ENV=staging /usr/local/rvm/bin/bootup_god status
+    RETVAL=$?
+    ;;
+  *)
+    # Unknown argument.
+    echo "Usage:  $0 {start|stop|restart|terminate|status}"
+    exit 1
+    ;;
+esac
+
+exit $RETVAL

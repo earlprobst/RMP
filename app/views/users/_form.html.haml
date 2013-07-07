@@ -1,0 +1,39 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _form.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+= form.inputs do
+  = form.input :name
+  = form.input :email
+
+  - if (action == 'edit')
+    = form.input :password, :label => 'New password'
+    = form.input :password_confirmation, :label => 'Password confirmation'
+
+  - if ((current_user.is_superadmin?) && (@user != current_user))
+    = form.input :superadmin, :label => 'Global permissions'
+  - elsif (!current_user.is_superadmin?)
+    = form.input :superadmin, :as => :hidden, :value => false
+
+  - if ((action == 'new') || ((action == 'edit') && (@user != current_user)))
+    - i = 0
+    = form.inputs :for => :project_users, :name => "Projects permission" do |f|
+      - if current_user.is_project_admin?(@user.project_users[i].project)
+        = f.input :role, :label => @user.project_users[i].project.name, :as => :select, :collection => ProjectUser::ROLES, :required => false
+      - else
+        = f.input :role, :as => :hidden, :value => @user.project_users[i].role
+      = f.input :project_id, :as => :hidden, :value => @user.project_users[i].project_id
+      - i = i + 1

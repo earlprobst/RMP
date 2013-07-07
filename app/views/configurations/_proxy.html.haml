@@ -1,0 +1,33 @@
+-#-----------------------------------------------------------------------------
+-#
+-# Biocomfort Diagnostics GmbH & Co. KG
+-#            Copyright (c) 2008 - 2012. All Rights Reserved.
+-# Reproduction or modification is strictly prohibited without express
+-# written consent of Biocomfort Diagnostics GmbH & Co. KG.
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Contact: vollmer@biocomfort.de
+-#
+-#-----------------------------------------------------------------------------
+-#
+-# Filename: _proxy.html.haml
+-#
+-#-----------------------------------------------------------------------------
+
+- if resource.try("#{interface}_proxy_server".to_sym).present?
+  .title-container
+    %h4.title Proxy
+  .content-container{:id => "#{interface}-proxy-configuration"}
+    %dt.label Server
+    %dd.server= resource.try("#{interface}_proxy_server".to_sym)
+    %dt.label Port
+    %dd.port= resource.try("#{interface}_proxy_port".to_sym)
+    %dt.label Username
+    %dd.username= resource.try("#{interface}_proxy_username".to_sym)
+    %dt.label Password
+    %dd.password
+      -if resource.try("#{interface}_proxy_password".to_sym).present?
+        =resource.try("#{interface}_proxy_password".to_sym).gsub(/./, '*')
+    %dt.label SSL
+    %dd.ssl= resource.try("#{interface}_proxy_ssl".to_sym) ? "Yes" : "No"
